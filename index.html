@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Valeska - Navidad 2025</title>
+    <link rel="stylesheet" href="gift.css">
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <div class="scanline"></div>
+    
+    <div class="loading" id="loading">
+        <div class="loading-text">😊FELIZ NAVIDAD, VALESKA😊...</div>
+    </div>
+
+    <div class="controls">
+        muevete como quieras
+    </div>
+
+    <button class="lights-button" id="lightsBtn">✨ LUCES MÁGICAS ✨</button>
+
+    <div class="music-player">
+        <div class="music-header">🎵 MÚSICA NAVIDEÑA🎵</div>
+        <div class="song-item" data-song="0">🎄 </div>
+        <div class="song-item" data-song="1">🎅</div>
+        <div class="song-item" data-song="2">✨ </div>
+        <div class="song-item" data-song="3">🌟 </div>
+        <div class="song-item" data-song="4">💫 </div>
+        <div class="song-item" data-song="5">🎆 </div>
+        <div class="music-controls">
+            <button class="control-btn" id="playPauseBtn">▶️</button>
+            <button class="control-btn" id="stopBtn">⏹️</button>
+        </div>
+        <div class="volume-control">
+            <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="50">
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="gift.js"></script>
+</body>
+</html>
