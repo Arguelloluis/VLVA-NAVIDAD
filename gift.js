@@ -1,72 +1,64 @@
 // Music player setup
-        const songs = [
-            "Mariah Carey - All I Want for Christmas Is You (Make My Wish Come True Edition).mp4",
-            "Michael Bublé - It's Beginning To Look A Lot Like Christmas.mp4",
-            "Michael Bublé - Santa Claus Is Coming To Town [Official HD].mp4",
-            "Michael Bublé - Holly Jolly Christmas [Official HD].mp4",
-            "Michael Bublé - Christmas (Baby Please Come Home) [Official HD].mp4",
-            "Feliz Navidad (ft. Thalia) [Official HD Audio].mp4"
+       const songs = [
+            { title: "🎄 All I Want for Christmas Is You - Mariah Carey ", url: "Mariah Carey - All I Want for Christmas Is You (Make My Wish Come True Edition).mp4" },
+            { title: "🎆 It's Beginning To Look A Lot Like Christmas- Michael Bublé", url: "Michael Bublé - It's Beginning To Look A Lot Like Christmas.mp4" },
+            { title: "⭐ Christmas (Baby Please Come Home)' - Michael Bublé", url: "Michael Bublé - Christmas (Baby Please Come Home) [Official HD].mp4" },
+            { title: "🌟 Walking on Sunshine - Michael Bublé", url: "Michael Bublé - Santa Claus Is Coming To Town [Official HD].mp4" },
+            { title: "🎅 Santa Claus Is Coming To Town- Michael Bublé", url: "Michael Bublé - Santa Claus Is Coming To Town [Official HD].mp4" },
+            { title: "🎇 Feliz Navidad - Michael Bublé (ft. Thalia)", url: "Feliz Navidad (ft. Thalia) [Official HD Audio].mp4" }
         ];
 
-        let currentAudio = null;
-        let currentSong = -1;
+          let currentAudio = null;
+        let currentSong = 0;
+        let isPlaying = false;
 
-        document.querySelectorAll('.song-item').forEach(item => {
-            item.addEventListener('click', () => {
-                const songIndex = parseInt(item.dataset.song);
-                playSong(songIndex);
-            });
-        });
-
-        document.getElementById('playPauseBtn').addEventListener('click', () => {
-            if (currentAudio) {
-                if (currentAudio.paused) {
-                    currentAudio.play();
-                    document.getElementById('playPauseBtn').textContent = '⏸️';
-                } else {
-                    currentAudio.pause();
-                    document.getElementById('playPauseBtn').textContent = '▶️';
-                }
-            }
-        });
-
-        document.getElementById('stopBtn').addEventListener('click', () => {
-            if (currentAudio) {
-                currentAudio.pause();
-                currentAudio.currentTime = 0;
-                document.getElementById('playPauseBtn').textContent = '▶️';
-            }
-        });
-
-        document.getElementById('volumeSlider').addEventListener('input', (e) => {
-            if (currentAudio) {
-                currentAudio.volume = e.target.value / 100;
-            }
-        });
+        function updateSongTitle() {
+            document.getElementById('songTitle').textContent = songs[currentSong].title;
+        }
 
         function playSong(index) {
             if (currentAudio) {
                 currentAudio.pause();
             }
 
-            document.querySelectorAll('.song-item').forEach(item => {
-                item.classList.remove('playing');
-            });
-
-            document.querySelector(`[data-song="${index}"]`).classList.add('playing');
+            currentSong = index % songs.length;
+            if (currentSong < 0) currentSong = songs.length - 1;
             
-            currentAudio = new Audio(songs[index]);
-            currentAudio.volume = document.getElementById('volumeSlider').value / 100;
+            currentAudio = new Audio(songs[currentSong].url);
+            currentAudio.volume = 0.5;
             currentAudio.play();
+            isPlaying = true;
             document.getElementById('playPauseBtn').textContent = '⏸️';
-            currentSong = index;
+            updateSongTitle();
 
             currentAudio.addEventListener('ended', () => {
-                const nextSong = (currentSong + 1) % songs.length;
-                playSong(nextSong);
+                playSong(currentSong + 1);
             });
         }
 
+        document.getElementById('playPauseBtn').addEventListener('click', () => {
+            if (!currentAudio) {
+                playSong(0);
+            } else {
+                if (isPlaying) {
+                    currentAudio.pause();
+                    isPlaying = false;
+                    document.getElementById('playPauseBtn').textContent = '▶️';
+                } else {
+                    currentAudio.play();
+                    isPlaying = true;
+                    document.getElementById('playPauseBtn').textContent = '⏸️';
+                }
+            }
+        });
+
+        document.getElementById('prevBtn').addEventListener('click', () => {
+            playSong(currentSong - 1);
+        });
+
+        document.getElementById('nextBtn').addEventListener('click', () => {
+            playSong(currentSong + 1);
+        });
         // Scene setup
         const scene = new THREE.Scene();
         scene.background = new THREE.Color(0x0a1628);
